@@ -25,10 +25,22 @@
           }
         }
       },
-      "Hello": {
+      "Multimedia": {
         "type": "object",
         "properties": {
-          "message": {
+          "name": {
+            "type": "string"
+          },
+          "lastModified": {
+            "type": "string"
+          },
+          "etag": {
+            "type": "string"
+          },
+          "size": {
+            "type": "number"
+          },
+          "url": {
             "type": "string"
           }
         }

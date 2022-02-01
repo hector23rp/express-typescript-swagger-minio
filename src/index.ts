@@ -3,19 +3,30 @@ import definition from './server-spec.json'
 import * as path from 'path'
 import swaggerJsdoc from 'swagger-jsdoc'
 import * as swaggerUi from 'swagger-ui-express'
-import helloRouter from './routes/hello.route'
+import multimediaRouter from './routes/multimedia.route'
+import { createBucket } from './services/minio.service'
 
-const options = {
-  definition,
-  apis: [path.resolve(__dirname, './routes/*.ts')]
+const init = async () => {
+  // Configure Swagger
+  const options = {
+    definition,
+    apis: [path.resolve(__dirname, './routes/*.ts')]
+  }
+  const openapiSpecification = swaggerJsdoc(options)
+
+  // Configure routes
+  const app = express()
+  app.use(multimediaRouter)
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification))
+
+  // Configure Minio.io Bucket
+  await createBucket()
+
+  // Run API
+  app.listen(5000, () => {
+    console.log('Server listening in http://localhost:5000')
+    console.log('- API Docs in http://localhost:5000/api-docs')
+  })
 }
 
-const openapiSpecification = swaggerJsdoc(options)
-
-const app = express()
-app.use(helloRouter)
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification))
-app.listen(5000, () => {
-  console.log('Server listening in http://localhost:5000')
-  console.log('- API Docs in http://localhost:5000/api-docs')
-})
+init()
