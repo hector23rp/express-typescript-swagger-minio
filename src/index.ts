@@ -20,7 +20,14 @@ const init = async () => {
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification))
 
   // Configure Minio.io Bucket
-  await createBucket()
+  try {
+    console.log('Connecting to Minio.io server..')
+    await createBucket()
+    console.log('Connected!')
+  } catch (error) {
+    console.error(error)
+    process.exit(0)
+  }
 
   // Run API
   app.listen(5000, () => {
