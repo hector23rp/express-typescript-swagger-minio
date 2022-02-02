@@ -12,3 +12,11 @@ services:
       - "MINIO_ROOT_USER=ADMINUSER2143542"
       - "MINIO_ROOT_PASSWORD=d321c411-1a9b-460b-8259-194be048f505"
     command: server /data --console-address ":9001"
+  server:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - MinioEndpoint=minio
+    depends_on:
+      - minio

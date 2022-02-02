@@ -2,7 +2,7 @@ import * as Minio from 'minio'
 import { Multimedia } from '../types'
 
 const minioClient = new Minio.Client({
-  endPoint: 'localhost',
+  endPoint: process.env.MinioEndpoint || 'localhost',
   port: 9000,
   useSSL: false,
   accessKey: 'ADMINUSER2143542',

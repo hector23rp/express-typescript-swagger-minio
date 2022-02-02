@@ -12,7 +12,7 @@ const init = async () => {
   // Configure Swagger
   const options = {
     definition,
-    apis: [path.resolve(__dirname, './routes/*.ts')]
+    apis: [path.resolve(__dirname, './routes/*.ts'), path.resolve(__dirname, './routes/*.js')]
   }
   const openapiSpecification = swaggerJsdoc(options)
 
