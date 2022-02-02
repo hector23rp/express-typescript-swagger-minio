@@ -75,3 +75,12 @@ export const uploadFile = (req: any): Promise<Minio.UploadedObjectInfo> => {
     req.busboy.on('error', reject)
   })
 }
+
+/**
+ * Remove a File from Minio.io
+ * @param fileName string. File name that wants remove
+ * @returns Promise<void>
+ */
+export const deleteFile = (fileName: string): Promise<void> => {
+  return minioClient.removeObject(minioBucket, fileName)
+}
