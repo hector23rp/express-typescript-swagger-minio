@@ -1,8 +1,10 @@
 import express from 'express'
-import definition from './server-spec.json'
 import * as path from 'path'
 import swaggerJsdoc from 'swagger-jsdoc'
 import * as swaggerUi from 'swagger-ui-express'
+import busboy from 'connect-busboy'
+
+import definition from './server-spec.json'
 import multimediaRouter from './routes/multimedia.route'
 import { createBucket } from './services/minio.service'
 
@@ -16,6 +18,7 @@ const init = async () => {
 
   // Configure routes
   const app = express()
+  app.use(busboy())
   app.use(multimediaRouter)
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification))
 

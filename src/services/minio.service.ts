@@ -57,3 +57,21 @@ export const getFiles = (): Promise<Multimedia[]> => {
     })
   })
 }
+
+export const uploadFile = (req: any): Promise<Minio.UploadedObjectInfo> => {
+  console.log('Uploading file to Minio.io...')
+  return new Promise((resolve, reject) => {
+    req.pipe(req.busboy)
+    req.busboy.on('file', (_fieldname: string, file: any, { filename }: { filename: string }) => {
+      minioClient.putObject(minioBucket, filename, file, 0, (err, info) => {
+        if (err) {
+          reject(err)
+          return
+        }
+        console.log('File uploaded: ', info)
+        resolve(info)
+      })
+    })
+    req.busboy.on('error', reject)
+  })
+}
